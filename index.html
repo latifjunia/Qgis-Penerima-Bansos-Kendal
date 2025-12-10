@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistik Bantuan Sosial - Kabupaten Kendal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #3b82f6;
+            --accent-color: #10b981;
+            --light-color: #f8fafc;
+            --dark-color: #1e293b;
+            --gray-color: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: #f9fafb;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .logo i {
+            color: var(--accent-color);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+        }
+
+        nav a.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        /* HERO SECTION - DIUBAH LAGI */
+        .hero {
+            position: relative;
+            color: white;
+            padding: 100px 0 70px;
+            text-align: center;
+            margin-bottom: 40px;
+            overflow: hidden;
+            min-height: 75vh;
+            display: flex;
+            align-items: center;
+            background: 
+                linear-gradient(rgba(30, 58, 138, 0.92), rgba(30, 58, 138, 0.82)),
+                url('kantor_pemkab.jpg') center/cover no-repeat fixed;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            animation: fadeInUp 0.8s ease-out;
+            padding: 20px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            line-height: 1.3;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            opacity: 0.95;
+            line-height: 1.5;
+            font-weight: 300;
+        }
+
+        .stats-highlight {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            background-color: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(12px);
+            padding: 25px 20px;
+            border-radius: 16px;
+            width: 200px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        }
+
+        .stat-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent-color), #60a5fa);
+        }
+
+        .stat-box::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-box:hover {
+            transform: translateY(-8px);
+            background-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .stat-number {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: -0.5px;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.95;
+            font-weight: 500;
+            color: #e0f2fe;
+        }
+
+        .total-box {
+            background-color: rgba(16, 185, 129, 0.25);
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+
+        .total-box::before {
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+
+        .hero-info {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .hero-info p {
+            margin: 0;
+            font-size: 0.95rem;
+            opacity: 0.9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .hero-info i {
+            color: var(--accent-color);
+        }
+
+        .hero-cta {
+            margin-top: 40px;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--accent-color), #0da271);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+            text-decoration: none;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+            background: linear-gradient(135deg, #0da271, var(--accent-color));
+        }
+
+        .hero-scroll-indicator {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.5rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-8px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-4px);
+            }
+        }
+
+        /* Section Styles */
+        section {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: var(--gray-color);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section-divider {
+            height: 4px;
+            width: 80px;
+            background-color: var(--accent-color);
+            margin: 0 auto 30px;
+            border-radius: 2px;
+        }
+
+        /* Content Cards */
+        .content-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive Design untuk Hero */
+        @media (max-width: 1100px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .stat-box {
+                width: 180px;
+                padding: 22px 18px;
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 80px 0 50px;
+                min-height: 65vh;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+                margin-bottom: 30px;
+            }
+            
+            .stats-highlight {
+                gap: 15px;
+                margin-top: 30px;
+            }
+            
+            .stat-box {
+                width: calc(50% - 15px);
+                padding: 20px 15px;
+            }
+            
+            .stat-number {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 60px 0 40px;
+            }
+            
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+            
+            .stats-highlight {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .stat-box {
+                width: 100%;
+                max-width: 250px;
+            }
+            
+            .hero-info p {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Data Table */
+        .data-table-container {
+            overflow-x: auto;
+            margin: 30px 0;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .data-table thead {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .data-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .data-table tbody tr {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        .data-table td {
+            padding: 15px;
+        }
+
+        .total-row {
+            background-color: #e0f2fe !important;
+            font-weight: 600;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            height: 400px;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+        }
+
+        @media (max-width: 1100px) {
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Peta QGIS Section */
+        .qgis-maps-section {
+            background-color: #f0f9ff;
+            padding: 40px 0;
+        }
+
+        .qgis-map-container {
+            margin: 30px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+        }
+
+        .qgis-map-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .qgis-map-header h3 {
+            font-size: 1.3rem;
+            margin: 0;
+        }
+
+        .qgis-map-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .qgis-map-controls button {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: 500;
+        }
+
+        .qgis-map-controls button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .qgis-maps-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 992px) {
+            .qgis-maps-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .qgis-map-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .qgis-map-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .qgis-map-title {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .qgis-map-frame {
+            width: 100%;
+            height: 400px;
+            border: none;
+            background-color: #f8fafc;
+        }
+
+        .qgis-map-info {
+            padding: 15px 20px;
+            background-color: #f8fafc;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: var(--gray-color);
+        }
+
+        .fullscreen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .fullscreen-overlay.active {
+            display: flex;
+        }
+
+        .fullscreen-header {
+            width: 100%;
+            max-width: 1400px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .fullscreen-header h3 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .close-fullscreen {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .fullscreen-iframe {
+            width: 100%;
+            max-width: 1400px;
+            height: 80vh;
+            border: none;
+            border-radius: 8px;
+        }
+
+        /* Contact Section */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 500;
+        }
+
+        .form-control {
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background-color: #1e40af;
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+        }
+
+        .btn-accent:hover {
+            background-color: #0da271;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-links h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            nav ul {
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            nav ul {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background-color: white;
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                display: none;
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .content-card {
+                padding: 20px;
+            }
+
+            .chart-container {
+                height: 300px;
+            }
+            
+            .qgis-map-frame {
+                height: 300px;
+            }
+        }
+
+        /* Tabs for Data Navigation */
+        .data-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            font-weight: 500;
+            color: var(--gray-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary-color);
+        }
+
+        .tab-btn.active {
+            color: var(--primary-color);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <div class="nav-container">
+                <div class="logo">
+                    <i class="fas fa-hands-helping"></i>
+                    <span>Bansos Kendal</span>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <nav>
+                    <ul id="navMenu">
+                        <li><a href="#home" class="active">Beranda</a></li>
+                        <li><a href="#background">Latar Belakang</a></li>
+                        <li><a href="#data">Data & Tabel</a></li>
+                        <li><a href="#qgis-maps">Peta QGIS</a></li>
+                        <li><a href="#charts">Grafik</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section - DIUBAH -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Statistik Penerima Bantuan Sosial Kabupaten Kendal</h1>
+                <p>Data penerima Program Keluarga Harapan (PKH), KIS APBN, dan Jamkesda di 20 Kecamatan Kabupaten Kendal Tahun 2023</p>
+                
+                <div class="stats-highlight">
+                    <div class="stat-box">
+                        <div class="stat-number">45.124</div>
+                        <div class="stat-label">Penerima PKH</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">399.394</div>
+                        <div class="stat-label">Penerima KIS APBN</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">62.847</div>
+                        <div class="stat-label">Penerima Jamkesda</div>
+                    </div>
+                    <div class="stat-box total-box">
+                        <div class="stat-number">507.365</div>
+                        <div class="stat-label">Total Penerima</div>
+                    </div>
+                </div>
+                
+                <div class="hero-info">
+                    <p>
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Data Tahap IV Tahun 2023</span>
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>20 Kecamatan Kabupaten Kendal</span>
+                        <i class="fas fa-database"></i>
+                        <span>Sumber: Dinas Sosial Kabupaten Kendal</span>
+                    </p>
+                </div>
+                
+                <div class="hero-cta">
+                    <a href="#data" class="cta-button">
+                        <i class="fas fa-chart-bar"></i> Lihat Data Lengkap
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="hero-scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Latar Belakang Section -->
+    <section id="background">
+        <div class="container">
+            <div class="section-title">
+                <h2>Latar Belakang</h2>
+                <div class="section-divider"></div>
+                <p>Program bantuan sosial pemerintah sebagai upaya mengurangi kesenjangan dan meningkatkan kesejahteraan masyarakat</p>
+            </div>
+            
+            <div class="content-card">
+                <h3>Program Bantuan Sosial di Kabupaten Kendal</h3>
+                <p>Pemerintah Kabupaten Kendal melalui Dinas Sosial melaksanakan berbagai program bantuan sosial sebagai implementasi kebijakan pemerintah pusat dan daerah dalam rangka mengurangi kemiskinan dan meningkatkan kesejahteraan masyarakat.</p>
+                
+                <h4>Jenis Bantuan Sosial yang Dicakup:</h4>
+                <ul style="margin-left: 20px; margin-top: 15px;">
+                    <li><strong>PKH (Program Keluarga Harapan)</strong>: Bantuan bersyarat untuk keluarga sangat miskin dengan komponen kesehatan dan pendidikan yang bertujuan untuk memutus rantai kemiskinan antar generasi.</li>
+                    <li><strong>KIS APBN (Kartu Indonesia Sehat - APBN)</strong>: Bantuan iuran Jaminan Kesehatan Nasional (JKN) yang dibiayai dari Anggaran Pendapatan dan Belanja Negara untuk keluarga miskin dan rentan miskin.</li>
+                    <li><strong>Jamkesda (Jaminan Kesehatan Daerah)</strong>: Program jaminan kesehatan yang dibiayai oleh Anggaran Pendapatan dan Belanja Daerah Kabupaten Kendal untuk melengkapi program KIS APBN.</li>
+                </ul>
+                
+                <p style="margin-top: 20px;">Data yang disajikan merupakan jumlah penerima manfaat tahap IV tahun 2023 yang tersebar di 20 kecamatan di Kabupaten Kendal. Data ini menjadi acuan penting dalam perencanaan, evaluasi, dan pengembangan program bantuan sosial ke depan.</p>
+                
+                <div style="background-color: #f0f9ff; padding: 15px; border-radius: 8px; margin-top: 20px; border-left: 4px solid var(--accent-color);">
+                    <p><strong>Sumber Data:</strong> Dinas Sosial Kabupaten Kendal (Social Office of Kendal Regency)</p>
+                    <p><strong>Periode Data:</strong> Tahun 2023 (Tahap IV)</p>
+                    <p><strong>Cakupan Wilayah:</strong> 20 Kecamatan di Kabupaten Kendal</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data & Tabel Section -->
+    <section id="data">
+        <div class="container">
+            <div class="section-title">
+                <h2>Data & Tabel</h2>
+                <div class="section-divider"></div>
+                <p>Data jumlah penerima bantuan sosial per kecamatan di Kabupaten Kendal Tahun 2023</p>
+            </div>
+            
+            <div class="content-card">
+                <div class="data-tabs">
+                    <button class="tab-btn active" data-tab="table1">Tabel Data Lengkap</button>
+                    <button class="tab-btn" data-tab="table2">Distribusi Per Kecamatan</button>
+                </div>
+                
+                <div class="tab-content active" id="table1">
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Kecamatan</th>
+                                    <th>PKH</th>
+                                    <th>KIS APBN</th>
+                                    <th>Jamkesda</th>
+                                    <th>Jumlah Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Data will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="table2">
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Kecamatan</th>
+                                    <th>% PKH</th>
+                                    <th>% KIS APBN</th>
+                                    <th>% Jamkesda</th>
+                                    <th>% dari Total Penerima</th>
+                                </tr>
+                            </thead>
+                            <tbody id="percentage-table-body">
+                                <!-- Data will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px; padding: 15px; background-color: #f8fafc; border-radius: 8px;">
+                    <h4>Keterangan:</h4>
+                    <p><strong>Catatan:</strong> Jumlah keluarga penerima manfaat tahap IV tahun 2023 / Number of beneficiary families in stage IV in 2024</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Peta QGIS Section -->
+    <section class="qgis-maps-section" id="qgis-maps">
+        <div class="container">
+            <div class="section-title">
+                <h2>Peta QGIS WebGIS</h2>
+                <div class="section-divider"></div>
+                <p>Visualisasi spasial data bantuan sosial menggunakan QGIS WebGIS</p>
+            </div>
+            
+            <div class="qgis-map-controls">
+                <button id="fullscreenBtn"></button>
+            </div>
+        </div>
+        
+        <!-- Main QGIS Map -->
+        <div class="qgis-map-container">
+            
+        </div>
+        
+        
+        
+        <!-- 4 Peta QGIS dalam Grid -->
+        
+        <div class="qgis-maps-grid">
+            <!-- Peta 1: Total Penerima -->
+            <div class="qgis-map-card">
+                <div class="qgis-map-title">
+                    <i class="fas fa-map-marked-alt"></i> Peta 1: Total Penerima Bansos
+                </div>
+                <iframe 
+                    src="Jumlah Total Penerima Bansos/index.html" 
+                    class="qgis-map-frame"
+                    title="Peta Total Penerima Bantuan Sosial"
+                    allowfullscreen>
+                </iframe>
+                <div class="qgis-map-info">
+                    Menampilkan total penerima bantuan sosial di setiap kecamatan
+                </div>
+            </div>
+            
+            <!-- Peta 2: Penerima PKH -->
+            <div class="qgis-map-card">
+                <div class="qgis-map-title">
+                    <i class="fas fa-home"></i> Peta 2: Penerima PKH
+                </div>
+                <iframe 
+                    src="Penerima PKH/index.html" 
+                    class="qgis-map-frame"
+                    title="Peta Penerima Program Keluarga Harapan"
+                    allowfullscreen>
+                </iframe>
+                <div class="qgis-map-info">
+                    Distribusi penerima Program Keluarga Harapan (PKH)
+                </div>
+            </div>
+            
+            <!-- Peta 3: Penerima KIS APBN -->
+            <div class="qgis-map-card">
+                <div class="qgis-map-title">
+                    <i class="fas fa-heartbeat"></i> Peta 3: Penerima KIS APBN
+                </div>
+                <iframe 
+                    src="Penerima KIS APBN/index.html" 
+                    class="qgis-map-frame"
+                    title="Peta Penerima KIS APBN"
+                    allowfullscreen>
+                </iframe>
+                <div class="qgis-map-info">
+                    Sebaran penerima Kartu Indonesia Sehat (APBN)
+                </div>
+            </div>
+            
+            <!-- Peta 4: Penerima Jamkesda -->
+            <div class="qgis-map-card">
+                <div class="qgis-map-title">
+                    <i class="fas fa-hospital"></i> Peta 4: Penerima Jamkesda
+                </div>
+                <iframe 
+                    src="Penerima JAMKESDA/index.html" 
+                    class="qgis-map-frame"
+                    title="Peta Penerima Jamkesda"
+                    allowfullscreen>
+                </iframe>
+                <div class="qgis-map-info">
+                    Distribusi penerima Jaminan Kesehatan Daerah
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fullscreen Overlay -->
+    
+
+    <button class="close-fullscreen" id="closeFullscreen">
+        <i class="fas fa-times"></i>
+    </button>
+</div>
+
+</div>
+
+<!-- Grafik Section -->
+<section id="charts">
+    <div class="container">
+        <div class="section-title">
+            <h2>Grafik & Visualisasi Data</h2>
+            <div class="section-divider"></div>
+            <p>Analisis data penerima bantuan sosial dalam bentuk visual yang informatif</p>
+        </div>
+        
+        <div class="content-card">
+            <div class="chart-grid">
+                <div>
+                    <h3>Perbandingan Jumlah Penerima per Kecamatan</h3>
+                    <div class="chart-container">
+                        <canvas id="districtChart"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <h3>Persentase Jenis Bantuan Sosial</h3>
+                    <div class="chart-container">
+                        <canvas id="typeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 40px;">
+                <h3>Analisis Data</h3>
+                <p>Berdasarkan data tahun 2023, dapat ditarik beberapa kesimpulan penting:</p>
+                <ul style="margin-left: 20px; margin-top: 15px;">
+                    <li>Program <strong>KIS APBN</strong> memiliki jumlah penerima terbanyak dengan <strong>399.394 penerima</strong> (78,7% dari total penerima).</li>
+                    <li><strong>PKH</strong> memiliki <strong>45.124 penerima</strong> (8,9% dari total penerima), sedangkan <strong>Jamkesda</strong> memiliki <strong>62.847 penerima</strong> (12,4% dari total penerima).</li>
+                    <li>Kecamatan dengan jumlah penerima terbanyak adalah <strong>Sukorejo (34.546 penerima)</strong>, diikuti oleh <strong>Boja (31.809 penerima)</strong> dan <strong>Gemuh (31.706 penerima)</strong>.</li>
+                    <li>Kecamatan dengan jumlah penerima PKH tertinggi adalah <strong>Patean (3.350 penerima)</strong>, sementara untuk Jamkesda tertinggi di <strong>Pegandon (5.114 penerima)</strong>.</li>
+                    <li>Total penerima bantuan sosial di Kabupaten Kendal tahun 2023 mencapai <strong>507.365 penerima</strong>.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Kontak Section -->
+
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div>
+                <div class="footer-logo">Bansos Kendal</div>
+                <p>Sistem informasi statistik bantuan sosial Kabupaten Kendal. Menyajikan data akurat dan terpercaya untuk mendukung transparansi dan akuntabilitas program bantuan sosial.</p>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Menu</h3>
+                <ul>
+                    <li><a href="#home">Beranda</a></li>
+                    <li><a href="#background">Latar Belakang</a></li>
+                    <li><a href="#data">Data & Tabel</a></li>
+                    <li><a href="#qgis-maps">Peta QGIS</a></li>
+                    <li><a href="#charts">Grafik</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Program Bantuan</h3>
+                <ul>
+                    <li><a href="#">Program Keluarga Harapan (PKH)</a></li>
+                    <li><a href="#">KIS APBN</a></li>
+                    <li><a href="#">Jamkesda</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2023 Dinas Sosial Kabupaten Kendal. Semua hak dilindungi.</p>
+            <p>Data diperbarui: Desember 2023 | Sumber: Dinas Sosial Kabupaten Kendal</p>
+            <p>Peta WebGIS dibuat dengan QGIS </p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Data from the Excel file
+    const districtData = [
+        { district: "Plantungan", pkh: 2679, kis: 21901, jamkesda: 3343, total: 27923 },
+        { district: "Sukorejo", pkh: 2615, kis: 27157, jamkesda: 4774, total: 34546 },
+        { district: "Pageruyung", pkh: 2263, kis: 20155, jamkesda: 3900, total: 26318 },
+        { district: "Patean", pkh: 3350, kis: 27413, jamkesda: 2629, total: 33392 },
+        { district: "Singorojo", pkh: 2288, kis: 22069, jamkesda: 3174, total: 27531 },
+        { district: "Limbangan", pkh: 1401, kis: 13018, jamkesda: 2115, total: 16534 },
+        { district: "Boja", pkh: 2726, kis: 24561, jamkesda: 4522, total: 31809 },
+        { district: "Kaliwungu", pkh: 1872, kis: 16626, jamkesda: 2931, total: 21429 },
+        { district: "Kaliwungu Selatan", pkh: 2232, kis: 17434, jamkesda: 2277, total: 21943 },
+        { district: "Brangsong", pkh: 1903, kis: 20113, jamkesda: 3180, total: 25196 },
+        { district: "Pegandon", pkh: 1653, kis: 14262, jamkesda: 5114, total: 21029 },
+        { district: "Ngampel", pkh: 1844, kis: 12523, jamkesda: 2872, total: 17239 },
+        { district: "Gemuh", pkh: 2645, kis: 25860, jamkesda: 3201, total: 31706 },
+        { district: "Ringinarum", pkh: 1982, kis: 17608, jamkesda: 4209, total: 23799 },
+        { district: "Weleri", pkh: 2588, kis: 22760, jamkesda: 1326, total: 26674 },
+        { district: "Rowosari", pkh: 2810, kis: 25372, jamkesda: 2645, total: 30827 },
+        { district: "Kangkung", pkh: 2406, kis: 19928, jamkesda: 2045, total: 24379 },
+        { district: "Cepiring", pkh: 2007, kis: 17454, jamkesda: 2188, total: 21649 },
+        { district: "Patebon", pkh: 2267, kis: 19253, jamkesda: 4759, total: 26279 },
+        { district: "Kendal", pkh: 1593, kis: 13927, jamkesda: 1643, total: 17163 },
+        { district: "Kabupaten Kendal", pkh: 45124, kis: 399394, jamkesda: 62847, total: 507365 }
+    ];
+
+    // Mobile menu toggle
+    document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+        const navMenu = document.getElementById('navMenu');
+        navMenu.classList.toggle('active');
+    });
+
+    // Tab functionality
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const tabId = this.getAttribute('data-tab');
+            
+            // Remove active class from all tabs and contents
+            tabBtns.forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Add active class to clicked tab and corresponding content
+            this.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+
+    // Fullscreen functionality
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const closeFullscreenBtn = document.getElementById('closeFullscreen');
+    const fullscreenOverlay = document.getElementById('fullscreenOverlay');
+    const mainQGISMap = document.getElementById('mainQGISMap');
+    const fullscreenIframe = document.getElementById('fullscreenIframe');
+    
+    fullscreenBtn.addEventListener('click', function() {
+        // Copy the src from main map to fullscreen iframe
+        fullscreenIframe.src = mainQGISMap.src;
+        document.getElementById('fullscreenTitle').textContent = 'Peta QGIS WebGIS - Fullscreen Mode';
+        fullscreenOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
+    });
+    
+    closeFullscreenBtn.addEventListener('click', function() {
+        fullscreenOverlay.classList.remove('active');
+        document.body.style.overflow = ''; // Re-enable scrolling
+    });
+    
+    // Close fullscreen with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && fullscreenOverlay.classList.contains('active')) {
+            fullscreenOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+
+    // Populate data table
+    const tableBody = document.querySelector('.data-table tbody');
+    const percentageTableBody = document.getElementById('percentage-table-body');
+    
+    districtData.forEach((data, index) => {
+        // Main table row
+        const row = document.createElement('tr');
+        if (data.district === "Kabupaten Kendal") {
+            row.classList.add('total-row');
+        }
+        
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${data.district}</td>
+            <td>${data.pkh.toLocaleString()}</td>
+            <td>${data.kis.toLocaleString()}</td>
+            <td>${data.jamkesda.toLocaleString()}</td>
+            <td>${data.total.toLocaleString()}</td>
+        `;
+        
+        tableBody.appendChild(row);
+        
+        // Percentage table row (skip the total row)
+        if (data.district !== "Kabupaten Kendal") {
+            const pctRow = document.createElement('tr');
+            const pkhPct = ((data.pkh / 45124) * 100).toFixed(2);
+            const kisPct = ((data.kis / 399394) * 100).toFixed(2);
+            const jamkesdaPct = ((data.jamkesda / 62847) * 100).toFixed(2);
+            const totalPct = ((data.total / 507365) * 100).toFixed(2);
+            
+            pctRow.innerHTML = `
+                <td>${data.district}</td>
+                <td>${pkhPct}%</td>
+                <td>${kisPct}%</td>
+                <td>${jamkesdaPct}%</td>
+                <td>${totalPct}%</td>
+            `;
+            
+            percentageTableBody.appendChild(pctRow);
+        }
+    });
+
+    // Initialize charts
+    document.addEventListener('DOMContentLoaded', function() {
+        // District chart
+        const districtCtx = document.getElementById('districtChart').getContext('2d');
+        const districtLabels = districtData.filter(d => d.district !== "Kabupaten Kendal").map(d => d.district);
+        const districtTotals = districtData.filter(d => d.district !== "Kabupaten Kendal").map(d => d.total);
+        
+        new Chart(districtCtx, {
+            type: 'bar',
+            data: {
+                labels: districtLabels,
+                datasets: [{
+                    label: 'Jumlah Penerima per Kecamatan',
+                    data: districtTotals,
+                    backgroundColor: [
+                        'rgba(59, 130, 246, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(59, 130, 246, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Jumlah Penerima'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            maxRotation: 45,
+                            minRotation: 45
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `Jumlah: ${context.raw.toLocaleString()} penerima`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Type chart
+        const typeCtx = document.getElementById('typeChart').getContext('2d');
+        const totalData = districtData[districtData.length - 1];
+        
+        new Chart(typeCtx, {
+            type: 'pie',
+            data: {
+                labels: ['PKH', 'KIS APBN', 'Jamkesda'],
+                datasets: [{
+                    label: 'Jumlah Penerima',
+                    data: [totalData.pkh, totalData.kis, totalData.jamkesda],
+                    backgroundColor: [
+                        'rgba(16, 185, 129, 0.7)',
+                        'rgba(59, 130, 246, 0.7)',
+                        'rgba(139, 92, 246, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(16, 185, 129, 1)',
+                        'rgba(59, 130, 246, 1)',
+                        'rgba(139, 92, 246, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const value = context.raw;
+                                const total = totalData.total;
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return `${context.label}: ${value.toLocaleString()} (${percentage}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('nav a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            // Close mobile menu if open
+            document.getElementById('navMenu').classList.remove('active');
+            
+            // Handle internal links
+            if (this.getAttribute('href').startsWith('#')) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+                
+                // Update active nav link
+                document.querySelectorAll('nav a').forEach(link => {
+                    link.classList.remove('active');
+                });
+                this.classList.add('active');
+            }
+        });
+    });
+
+    // Update active nav link based on scroll position
+    window.addEventListener('scroll', function() {
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('nav a');
+        
+        let currentSection = '';
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 100;
+            const sectionHeight = section.clientHeight;
+            if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                currentSection = section.getAttribute('id');
+            }
+        });
+        
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${currentSection}`) {
+                link.classList.add('active');
+            }
+        });
+    });
+
+    // Add scroll animation for stat boxes
+    const statBoxes = document.querySelectorAll('.stat-box');
+    
+    const observerOptions = {
+        threshold: 0.3
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    statBoxes.forEach(box => {
+        box.style.opacity = '0';
+        box.style.transform = 'translateY(15px)';
+        box.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        observer.observe(box);
+    });
+
+    // Add date and time display
+    function updateDateTime() {
+        const now = new Date();
+        const dateTimeElement = document.getElementById('currentDateTime');
+        
+        if (dateTimeElement) {
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            const formattedDateTime = now.toLocaleDateString('id-ID', options);
+            dateTimeElement.textContent = formattedDateTime;
+        }
+    }
+
+    // Update date time every minute
+    updateDateTime();
+    setInterval(updateDateTime, 60000);
+</script>
+</body>
+</html>
